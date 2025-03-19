@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments - Canossa Kindergarten</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            background-color: #f8f9fa;
+        }
+        
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        
+        .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: 1rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+        }
+        
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+            padding: .5rem 1rem;
+        }
+        
+        .sidebar .nav-link.active {
+            color: #007bff;
+        }
+        
+        .sidebar .nav-link:hover {
+            color: #0056b3;
+        }
+        
+        .sidebar-heading {
+            font-size: .75rem;
+            text-transform: uppercase;
+        }
+        
+        .dashboard-container {
+            margin-top: 56px;
+        }
+        
+        .nav-icon {
+            margin-right: 10px;
+        }
+        
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 0.5em 0.8em;
+        }
+
+        .filter-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Canossa Kindergarten</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-nav">
+            <div class="nav-item text-nowrap d-flex align-items-center">
+                <span class="nav-link px-3 text-white username-display">Welcome, Admin</span>
+                <a class="nav-link px-3 text-white" href="#" id="logoutBtn">Sign out</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="sidebar-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="dashboard-tab" href="dashboard.html">
+                                <i class="bi bi-house-door nav-icon"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="enrollments-tab" href="enrollments.html">
+                                <i class="bi bi-list-check nav-icon"></i>Enrollments
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="payments-tab" href="payments.html">
+                                <i class="bi bi-cash-coin nav-icon"></i>Payments
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="documents-tab" href="documents.html">
+                                <i class="bi bi-file-earmark-text nav-icon"></i>Documents
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="teachers-tab" href="teachers.html">
+                                <i class="bi bi-person-workspace nav-icon"></i>Teachers
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="sections-tab" href="sections.html">
+                                <i class="bi bi-people nav-icon"></i>Sections
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="users-tab" href="users.html">
+                                <i class="bi bi-person-badge nav-icon"></i>Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="settings-tab" href="settings.html">
+                                <i class="bi bi-gear nav-icon"></i>Settings
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 dashboard-container">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Payment Records</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="exportBtn">
+                                <i class="bi bi-download me-1"></i> Export
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="printBtn">
+                                <i class="bi bi-printer me-1"></i> Print
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Filters -->
+                <div class="filter-card">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label for="status-filter" class="form-label">Payment Status</label>
+                            <select class="form-select" id="status-filter">
+                                <option value="all">All Statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="pending_approval">Pending Approval</option>
+                                <option value="paid">Paid/Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="payment-type-filter" class="form-label">Payment Type</label>
+                            <select class="form-select" id="payment-type-filter">
+                                <option value="all">All Types</option>
+                                <!-- Will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="date-filter" class="form-label">Date Range</label>
+                            <select class="form-select" id="date-filter">
+                                <option value="all">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="search-filter" class="form-label">Search</label>
+                            <input type="text" class="form-control" id="search-filter" placeholder="Student name, ID...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            Total Payments</div>
+                                        <div class="h5 mb-0 font-weight-bold" id="total-payments">0</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-credit-card text-primary" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                            Pending Approval</div>
+                                        <div class="h5 mb-0 font-weight-bold" id="pending-approval-count">0</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-hourglass-split text-warning" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Total Approved</div>
+                                        <div class="h5 mb-0 font-weight-bold" id="approved-count">0</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-check-circle text-success" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                            Total Rejected</div>
+                                        <div class="h5 mb-0 font-weight-bold" id="rejected-count">0</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-x-circle text-danger" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payments Table -->
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Student Name</th>
+                                <th>Payment Type</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payments-list">
+                            <!-- Will be populated dynamically -->
+                            <tr>
+                                <td colspan="8" class="text-center">Loading payments...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                <nav aria-label="Payments pagination" class="mt-4">
+                    <ul class="pagination justify-content-center" id="pagination">
+                        <!-- Will be populated dynamically -->
+                    </ul>
+                </nav>
+            </main>
+        </div>
+    </div>
+
+    <!-- Payment Details Modal -->
+    <div class="modal fade" id="paymentDetailsModal" tabindex="-1" aria-labelledby="paymentDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="paymentDetailsModalLabel">
+                        <i class="bi bi-receipt me-2"></i>Payment Details
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Payment Information -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0"><i class="bi bi-info-circle me-2"></i>Payment Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="text-muted small">Payment Date</label>
+                                        <p class="mb-0" id="payment-date">Loading...</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="text-muted small">Amount</label>
+                                        <p class="mb-0" id="payment-amount">Loading...</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="text-muted small">Type</label>
+                                        <p class="mb-0" id="payment-type">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0"><i class="bi bi-person me-2"></i>Student Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="text-muted small">Student Name</label>
+                                        <p class="mb-0" id="payment-student-name">Loading...</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="text-muted small">Parent/Guardian</label>
+                                        <p class="mb-0" id="payment-parent-name">Loading...</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="text-muted small">Status</label>
+                                        <p class="mb-0" id="payment-status-badge">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Details -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0"><i class="bi bi-credit-card me-2"></i>Payment Method</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="text-muted small">Method</label>
+                                        <p class="mb-0" id="payment-method">Loading...</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="text-muted small">Reference Number</label>
+                                        <p class="mb-0" id="payment-reference">Loading...</p>
+                                    </div>
+                                    <div class="mb-3" id="notes-container">
+                                        <label class="text-muted small">Notes</label>
+                                        <p class="mb-0" id="payment-notes">None</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0"><i class="bi bi-receipt-cutoff me-2"></i>Receipt</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-center">
+                                        <img id="receiptImage" src="" alt="Payment Receipt" class="img-fluid mb-2" style="max-height: 200px; border-radius: 4px;">
+                                        <div id="receiptError" class="alert alert-warning d-none">
+                                            <i class="bi bi-exclamation-triangle me-2"></i>No receipt image available or unable to load image.
+                                        </div>
+                                        <a id="receiptDownload" href="#" class="btn btn-sm btn-outline-primary mt-2" download>
+                                            <i class="bi bi-download me-2"></i>Download Receipt
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-success" id="approvePaymentBtn">
+                        <i class="bi bi-check-circle me-2"></i>Approve Payment
+                    </button>
+                    <button type="button" class="btn btn-danger" id="rejectPaymentBtn">
+                        <i class="bi bi-x-circle me-2"></i>Reject Payment
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x me-2"></i>Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../js/admin-auth-check.js"></script>
+    <script src="../js/admin-payments.js"></script>
+</body>
+</html> 

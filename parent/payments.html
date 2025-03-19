@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments - Canossa Kindergarten</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            background-color: #f8f9fa;
+        }
+        
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        
+        .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: 1rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+        }
+        
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+            padding: .5rem 1rem;
+        }
+        
+        .sidebar .nav-link.active {
+            color: #007bff;
+        }
+        
+        .sidebar .nav-link:hover {
+            color: #0056b3;
+        }
+        
+        .sidebar-heading {
+            font-size: .75rem;
+            text-transform: uppercase;
+        }
+        
+        .dashboard-container {
+            margin-top: 56px;
+        }
+        
+        .nav-icon {
+            margin-right: 10px;
+        }
+        
+        .payment-history-card {
+            border-left: 5px solid #ccc;
+            transition: transform 0.2s;
+        }
+        
+        .payment-history-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .payment-approved {
+            border-left-color: #28a745;
+        }
+        
+        .payment-rejected {
+            border-left-color: #dc3545;
+        }
+        
+        .payment-pending {
+            border-left-color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark sticky-top bg-primary flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Canossa Kindergarten</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-nav">
+            <div class="nav-item text-nowrap d-flex align-items-center">
+                <span class="nav-link px-3 text-white username-display">Welcome, Parent</span>
+                <a class="nav-link px-3 text-white" href="#" id="logoutBtn">Sign out</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="sidebar-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" id="dashboard-tab" href="dashboard.html">
+                                <i class="bi bi-house-door nav-icon"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="enrollment-tab" href="enrollment.html">
+                                <i class="bi bi-person-plus nav-icon"></i>Child Enrollment
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="documents-tab" href="documents.html">
+                                <i class="bi bi-file-earmark-text nav-icon"></i>Required Documents
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" id="payments-tab" href="payments.html">
+                                <i class="bi bi-cash-coin nav-icon"></i>Payments
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" href="profile.html">
+                                <i class="bi bi-person-circle nav-icon"></i>My Profile
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 dashboard-container">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Payments</h1>
+                </div>
+
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-info-circle"></i> Make tuition and other payments for your enrolled children. All payments are reviewed and approved by the administration.
+                </div>
+
+                <div id="no-students-message" class="alert alert-warning d-none">
+                    <p>You haven't enrolled any students yet. Please complete enrollment first.</p>
+                    <a href="enrollment.html" class="btn btn-primary">Go to Enrollment</a>
+                </div>
+
+                <div id="student-selector-container" class="mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Select Student</h5>
+                            <div class="mb-3">
+                                <select id="student-selector" class="form-select">
+                                    <option selected disabled>Loading students...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mb-4" id="payment-form-section">
+                            <div class="card-body">
+                                <h3 class="card-title">Make a Payment</h3>
+                                <form id="payment-form">
+                                    <input type="hidden" id="student-id">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="payment-type" class="form-label">Payment Type</label>
+                                            <select id="payment-type" class="form-select" required>
+                                                <option selected disabled value="">Select payment type</option>
+                                                <!-- Will be populated dynamically -->
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="amount" class="form-label">Amount</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">₱</span>
+                                                <input type="number" class="form-control" id="amount" placeholder="0.00" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="payment-method" class="form-label">Payment Method</label>
+                                            <select id="payment-method" class="form-select" required>
+                                                <option selected disabled value="">Select payment method</option>
+                                                <option value="Bank Transfer">Bank Transfer</option>
+                                                <option value="GCash">GCash</option>
+                                                <option value="Credit Card">Credit Card</option>
+                                                <option value="Cash">Cash</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="reference-number" class="form-label">Reference Number</label>
+                                            <input type="text" class="form-control" id="reference-number" placeholder="Transaction/Reference Number">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="receipt-file" class="form-label">Upload Receipt</label>
+                                        <input class="form-control" type="file" id="receipt-file" accept="image/jpeg,image/png,image/gif,application/pdf">
+                                        <div class="form-text">Upload a photo or screenshot of your payment receipt.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="payment-notes" class="form-label">Notes (Optional)</label>
+                                        <textarea class="form-control" id="payment-notes" rows="2" placeholder="Any additional information about your payment"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="submit-payment">
+                                        <i class="bi bi-check-circle"></i> Submit Payment
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <h3>Payment History</h3>
+                        <div id="payment-history-container">
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Payment Success Modal -->
+    <div class="modal fade" id="paymentSuccessModal" tabindex="-1" aria-labelledby="paymentSuccessModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="paymentSuccessModalLabel">Payment Submitted</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="payment-success-modal-body">
+                    <div class="alert alert-success mb-0">
+                        <p class="mb-2"><i class="bi bi-check-circle-fill me-2"></i> <strong>Thank you for your payment!</strong></p>
+                        <p class="mb-0">Your payment has been submitted successfully and will be reviewed by the administration. You will be notified once it has been processed.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Progress Modal -->
+    <div class="modal fade" id="uploadProgressModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Uploading Receipt</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <p class="text-center mt-3" id="upload-status-text">Preparing to upload...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../js/auth-check.js"></script>
+    <script src="../js/parent-payments.js"></script>
+</body>
+</html> 

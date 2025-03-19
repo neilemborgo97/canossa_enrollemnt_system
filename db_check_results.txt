@@ -1,0 +1,42 @@
+===== DATABASE CHECK =====
+
+1. STUDENTS TABLE:
+Found 3 students:
+Student ID: 1, Name: Neil Joebert Emborgo, Parent ID: 2
+Student ID: 2, Name: Craig Emborgo, Parent ID: 2
+Student ID: 3, Name: Chanlee Lagnason Jr., Parent ID: 3
+
+2. ENROLLMENTS TABLE:
+Found 5 enrollments:
+Enrollment ID: 1, Student ID: 1, Payment Date: 2025-03-19 19:22:51, Amount: 5000.00, Status: pending_approval
+Enrollment ID: 2, Student ID: 2, Payment Date: 2025-03-19 19:01:03, Amount: 20000.00, Status: paid
+Enrollment ID: 3, Student ID: 3, Payment Date: NULL, Amount: , Status: paid
+Enrollment ID: 4, Student ID: 1, Payment Date: 2025-03-19 19:27:05, Amount: 1000.00, Status: pending_approval
+Enrollment ID: 5, Student ID: 1, Payment Date: 2025-03-19 19:27:17, Amount: 1000.00, Status: pending_approval
+
+3. PAYMENT DETAILS BY STUDENT:
+Student: Neil Joebert Emborgo (ID: 1, Parent ID: 2)
+  Found 3 payments:
+    Payment ID: 5, Date: 2025-03-19 19:27:17, Amount: 1000.00, Type ID: 1, Status: pending_approval
+    Payment ID: 4, Date: 2025-03-19 19:27:05, Amount: 1000.00, Type ID: 1, Status: pending_approval
+    Payment ID: 1, Date: 2025-03-19 19:22:51, Amount: 5000.00, Type ID: 1, Status: pending_approval
+
+Student: Craig Emborgo (ID: 2, Parent ID: 2)
+  Found 1 payments:
+    Payment ID: 2, Date: 2025-03-19 19:01:03, Amount: 20000.00, Type ID: 2, Status: paid
+
+Student: Chanlee Lagnason Jr. (ID: 3, Parent ID: 3)
+  No payments found for this student.
+
+4. TESTING getPaymentsByParent FUNCTION:
+Testing Parent ID: 2
+  Query returned 4 results for parent ID 2
+  Payment ID: 5, Student: Neil Joebert Emborgo, Date: 2025-03-19 19:27:17, Amount: 1000.00, Type: Enrollment Fee, Status: pending_approval
+  Payment ID: 4, Student: Neil Joebert Emborgo, Date: 2025-03-19 19:27:05, Amount: 1000.00, Type: Enrollment Fee, Status: pending_approval
+  Payment ID: 1, Student: Neil Joebert Emborgo, Date: 2025-03-19 19:22:51, Amount: 5000.00, Type: Enrollment Fee, Status: pending_approval
+  Payment ID: 2, Student: Craig Emborgo, Date: 2025-03-19 19:01:03, Amount: 20000.00, Type: Tuition Fee, Status: paid
+
+Testing Parent ID: 3
+  Query returned 0 results for parent ID 3
+
+===== END DATABASE CHECK =====

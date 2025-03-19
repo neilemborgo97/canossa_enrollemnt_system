@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard - Canossa Kindergarten</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            background-color: #f8f9fa;
+        }
+        
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        
+        .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: 1rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+        }
+        
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+            padding: .5rem 1rem;
+        }
+        
+        .sidebar .nav-link.active {
+            color: #007bff;
+        }
+        
+        .sidebar .nav-link:hover {
+            color: #0056b3;
+        }
+        
+        .sidebar-heading {
+            font-size: .75rem;
+            text-transform: uppercase;
+        }
+        
+        .dashboard-container {
+            margin-top: 56px;
+        }
+        
+        .btn-enroll {
+            padding: 15px;
+        }
+        
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 0.5em 0.8em;
+        }
+        
+        .profile-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+        
+        .nav-icon {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark sticky-top bg-primary flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Canossa Kindergarten</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-nav">
+            <div class="nav-item text-nowrap d-flex align-items-center">
+                <span class="nav-link px-3 text-white username-display">Welcome, Parent</span>
+                <a class="nav-link px-3 text-white" href="#" id="logoutBtn">Sign out</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="sidebar-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="dashboard-tab" href="dashboard.html">
+                                <i class="bi bi-house-door nav-icon"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="enrollment-tab" href="enrollment.html">
+                                <i class="bi bi-person-plus nav-icon"></i>Child Enrollment
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="documents-tab" href="documents.html">
+                                <i class="bi bi-file-earmark-text nav-icon"></i>Required Documents
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="payments-tab" href="payments.html">
+                                <i class="bi bi-cash-coin nav-icon"></i>Payments
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" href="profile.html">
+                                <i class="bi bi-person-circle nav-icon"></i>My Profile
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 dashboard-container">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+                    <a href="enrollment.html" class="btn btn-primary btn-enroll">
+                        <i class="bi bi-plus-circle"></i> Enroll a Child
+                    </a>
+                </div>
+
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-info-circle"></i> Welcome to your parent dashboard! Here you can manage your children's enrollments, submit required documents, and make payments.
+                </div>
+
+                <h2 class="h4 mt-4">My Children</h2>
+                <div class="table-responsive" id="students-container">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Level</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-list">
+                            <!-- Student data will be loaded here dynamically -->
+                            <tr>
+                                <td colspan="5" class="text-center">Loading students...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 class="h4 mt-5">Recent Activities</h2>
+                <div class="list-group" id="activities-list">
+                    <!-- Will be populated dynamically -->
+                    <div class="list-group-item">Loading recent activities...</div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../js/auth-check.js"></script>
+    <script src="../js/parent-dashboard.js"></script>
+</body>
+</html> 

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrollment Details - Canossa Kindergarten</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            background-color: #f8f9fa;
+        }
+        
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        
+        .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: 1rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+        }
+        
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+            padding: .5rem 1rem;
+        }
+        
+        .sidebar .nav-link.active {
+            color: #007bff;
+        }
+        
+        .sidebar .nav-link:hover {
+            color: #0056b3;
+        }
+        
+        .sidebar-heading {
+            font-size: .75rem;
+            text-transform: uppercase;
+        }
+        
+        .dashboard-container {
+            margin-top: 56px;
+        }
+        
+        .nav-icon {
+            margin-right: 10px;
+        }
+        
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 0.5em 0.8em;
+        }
+
+        .info-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .document-preview {
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: contain;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .document-preview:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .zoom-icon {
+            background-color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        
+        .zoom-icon:hover {
+            opacity: 1;
+        }
+        
+        #fullDocumentImage {
+            max-height: 70vh;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Canossa Kindergarten</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-nav">
+            <div class="nav-item text-nowrap d-flex align-items-center">
+                <span class="nav-link px-3 text-white username-display">Welcome, Admin</span>
+                <a class="nav-link px-3 text-white" href="#" id="logoutBtn">Sign out</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="sidebar-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" id="dashboard-tab" href="dashboard.html">
+                                <i class="bi bi-house-door nav-icon"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" id="enrollments-tab" href="enrollments.html">
+                                <i class="bi bi-list-check nav-icon"></i>Enrollments
+                            </a>
+                        </li>
+                    
+                        <li class="nav-item">
+                            <a class="nav-link" id="payments-tab" href="payments.html">
+                                <i class="bi bi-cash-coin nav-icon"></i>Payments
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="documents-tab" href="documents.html">
+                                <i class="bi bi-file-earmark-text nav-icon"></i>Documents
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="teachers-tab" href="teachers.html">
+                                <i class="bi bi-person-workspace nav-icon"></i>Teachers
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="sections-tab" href="sections.html">
+                                <i class="bi bi-people nav-icon"></i>Sections
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="users-tab" href="users.html">
+                                <i class="bi bi-person-badge nav-icon"></i>Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="settings-tab" href="settings.html">
+                                <i class="bi bi-gear nav-icon"></i>Settings
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 dashboard-container">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Enrollment Details</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="printBtn">
+                                <i class="bi bi-printer"></i> Print
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="exportBtn">
+                                <i class="bi bi-download"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Information -->
+                <div class="info-card">
+                    <h3 class="h4 mb-3">Student Information</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Name:</strong> <span id="student-name">Loading...</span></p>
+                            <p><strong>Birthdate:</strong> <span id="student-birthdate">Loading...</span></p>
+                            <p><strong>Age:</strong> <span id="student-age">Loading...</span></p>
+                            <p><strong>Gender:</strong> <span id="student-gender">Loading...</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Level:</strong> <span id="student-level">Loading...</span></p>
+                            <p><strong>Schedule:</strong> <span id="student-schedule">Loading...</span></p>
+                            <p><strong>Previous School:</strong> <span id="student-previous-school">Loading...</span></p>
+                            <p><strong>Address:</strong> <span id="student-address">Loading...</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parent Information -->
+                <div class="info-card">
+                    <h3 class="h4 mb-3">Parent Information</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Name:</strong> <span id="parent-name">Loading...</span></p>
+                            <p><strong>Email:</strong> <span id="parent-email">Loading...</span></p>
+                            <p><strong>Contact Number:</strong> <span id="parent-contact">Loading...</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Emergency Contact Name:</strong> <span id="emergency-contact-name">Loading...</span></p>
+                            <p><strong>Emergency Contact Number:</strong> <span id="emergency-contact-number">Loading...</span></p>
+                            <p><strong>Relationship:</strong> <span id="parent-relationship">Loading...</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Required Documents -->
+                <div class="info-card">
+                    <h3 class="h4 mb-3">Required Documents</h3>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Birth Certificate</h5>
+                                    <img src="" alt="Birth Certificate" class="document-preview mb-2" id="birth-cert-preview">
+                                    <p class="card-text">
+                                        <span class="badge" id="birth-cert-status">Loading...</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">ID Picture</h5>
+                                    <img src="" alt="ID Picture" class="document-preview mb-2" id="id-picture-preview">
+                                    <p class="card-text">
+                                        <span class="badge" id="id-picture-status">Loading...</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Medical Certificate</h5>
+                                    <img src="" alt="Medical Certificate" class="document-preview mb-2" id="medical-cert-preview">
+                                    <p class="card-text">
+                                        <span class="badge" id="medical-cert-status">Loading...</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Report Card</h5>
+                                    <img src="" alt="Report Card" class="document-preview mb-2" id="report-card-preview">
+                                    <p class="card-text">
+                                        <span class="badge" id="report-card-status">Loading...</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enrollment Status -->
+                <div class="info-card">
+                    <h3 class="h4 mb-3">Enrollment Status</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Status:</strong> <span id="enrollment-status">Loading...</span></p>
+                            <p><strong>Enrollment Date:</strong> <span id="enrollment-date">Loading...</span></p>
+                            <p><strong>Admin Comments:</strong> <span id="admin-comments">None</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-success" id="approveBtn">
+                                    <i class="bi bi-check-circle"></i> Approve
+                                </button>
+                                <button class="btn btn-danger" id="rejectBtn">
+                                    <i class="bi bi-x-circle"></i> Reject
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Information Section -->
+                <div class="info-card">
+                    <h3 class="h4 mb-3">Payment Information</h3>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payment-list">
+                                <tr>
+                                    <td colspan="5" class="text-center">Loading payment information...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Document Viewer Modal -->
+    <div class="modal fade" id="documentViewerModal" tabindex="-1" aria-labelledby="documentViewerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="documentViewerModalLabel">View Document</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="fullDocumentImage" class="img-fluid" src="" alt="Document Preview">
+                    <div id="documentLoadError" class="alert alert-danger mt-3 d-none">
+                        Error loading document. The file may not exist or may be in an unsupported format.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="documentDownloadLink" href="#" class="btn btn-primary" download>Download</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Details Modal -->
+    <div class="modal fade" id="paymentDetailsModal" tabindex="-1" aria-labelledby="paymentDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentDetailsModalLabel">Payment Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Payment Date:</strong> <span id="payment-date">Loading...</span></p>
+                            <p><strong>Amount:</strong> <span id="payment-amount">Loading...</span></p>
+                            <p><strong>Type:</strong> <span id="payment-type">Loading...</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Method:</strong> <span id="payment-method">Loading...</span></p>
+                            <p><strong>Reference:</strong> <span id="payment-reference">Loading...</span></p>
+                            <p><strong>Status:</strong> <span id="payment-status-badge">Loading...</span></p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <h6>Payment Receipt</h6>
+                            <div class="text-center">
+                                <img id="receiptImage" src="" alt="Payment Receipt" class="img-fluid mb-2" style="max-height: 300px;">
+                                <div id="receiptError" class="alert alert-warning d-none">
+                                    No receipt image available or unable to load image.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="approvePaymentBtn">
+                        <i class="bi bi-check-circle"></i> Approve Payment
+                    </button>
+                    <button type="button" class="btn btn-danger" id="rejectPaymentBtn">
+                        <i class="bi bi-x-circle"></i> Reject Payment
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../js/admin-auth-check.js"></script>
+    <script src="../js/admin-enrollment-details.js"></script>
+    <!-- Sample receipt image for demo purposes -->
+    <div style="display: none;">
+        <img id="sample-receipt" src="data:image/png;base64,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">
+    </div>
+</body>
+</html> 

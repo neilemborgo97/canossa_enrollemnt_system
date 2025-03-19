@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child Enrollment - Canossa Kindergarten</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            background-color: #f8f9fa;
+        }
+        
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        
+        .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: 1rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+        }
+        
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+            padding: .5rem 1rem;
+        }
+        
+        .sidebar .nav-link.active {
+            color: #007bff;
+        }
+        
+        .sidebar .nav-link:hover {
+            color: #0056b3;
+        }
+        
+        .sidebar-heading {
+            font-size: .75rem;
+            text-transform: uppercase;
+        }
+        
+        .dashboard-container {
+            margin-top: 56px;
+        }
+        
+        .nav-icon {
+            margin-right: 10px;
+        }
+        
+        .form-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        // Add debug message at page load
+        console.log('Enrollment page loaded');
+        window.addEventListener('load', function() {
+            console.log('Window fully loaded');
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-dark sticky-top bg-primary flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Canossa Kindergarten</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-nav">
+            <div class="nav-item text-nowrap d-flex align-items-center">
+                <span class="nav-link px-3 text-white username-display">Welcome, Parent</span>
+                <a class="nav-link px-3 text-white" href="#" id="logoutBtn">Sign out</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="sidebar-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" id="dashboard-tab" href="dashboard.html">
+                                <i class="bi bi-house-door nav-icon"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" id="enrollment-tab" href="enrollment.html">
+                                <i class="bi bi-person-plus nav-icon"></i>Child Enrollment
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="documents-tab" href="documents.html">
+                                <i class="bi bi-file-earmark-text nav-icon"></i>Required Documents
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="payments-tab" href="payments.html">
+                                <i class="bi bi-cash-coin nav-icon"></i>Payments
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" href="profile.html">
+                                <i class="bi bi-person-circle nav-icon"></i>My Profile
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 dashboard-container">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Child Enrollment</h1>
+                </div>
+
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-info-circle"></i> Please complete all fields in the enrollment form. After submission, you will need to upload required documents and make a payment to complete the enrollment process.
+                </div>
+
+                <form id="enrollmentForm">
+                    <!-- Child Information Section -->
+                    <div class="form-section">
+                        <h3 class="section-title h5"><i class="bi bi-person"></i> Child Information</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="childName" class="form-label">Child's Full Name</label>
+                                <input type="text" class="form-control" id="childName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="birthdate" class="form-label">Birthdate</label>
+                                <input type="date" class="form-control" id="birthdate" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="age" min="2" max="7" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select class="form-select" id="gender" required>
+                                    <option value="" selected disabled>Select gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="level" class="form-label">Grade Level</label>
+                                <select class="form-select" id="level" required>
+                                    <option value="" selected disabled>Select level</option>
+                                    <!-- Will be populated dynamically -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="schedule" class="form-label">Schedule Preference</label>
+                                <select class="form-select" id="schedule" required>
+                                    <option value="" selected disabled>Select schedule</option>
+                                    <option value="morning">Morning (8:00 AM - 11:00 AM)</option>
+                                    <option value="afternoon">Afternoon (1:00 PM - 4:00 PM)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="previousSchool" class="form-label">Previous School (if any)</label>
+                                <input type="text" class="form-control" id="previousSchool">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Home Address</label>
+                            <textarea class="form-control" id="address" rows="2" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Guardian Information Section -->
+                    <div class="form-section">
+                        <h3 class="section-title h5"><i class="bi bi-people"></i> Guardian Information</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="guardianName" class="form-label">Guardian's Name</label>
+                                <input type="text" class="form-control" id="guardianName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="relationship" class="form-label">Relationship to Child</label>
+                                <input type="text" class="form-control" id="relationship" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="contactNumber" class="form-label">Contact Number</label>
+                                <input type="tel" class="form-control" id="contactNumber" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contact Section -->
+                    <div class="form-section">
+                        <h3 class="section-title h5"><i class="bi bi-telephone"></i> Emergency Contact (Other than Guardian)</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="emergencyName" class="form-label">Emergency Contact Name</label>
+                                <input type="text" class="form-control" id="emergencyName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="emergencyNumber" class="form-label">Emergency Contact Number</label>
+                                <input type="tel" class="form-control" id="emergencyNumber" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 mb-5">
+                        <button type="button" class="btn btn-secondary me-md-2" id="cancelBtn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit Enrollment</button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Enrollment Submitted</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Your child's enrollment has been submitted successfully!</p>
+                    <p>Next steps:</p>
+                    <ul>
+                        <li>Upload required documents</li>
+                        <li>Make a payment</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <a href="documents.html" class="btn btn-primary">Upload Documents</a>
+                    <a href="payments.html" class="btn btn-success">Make Payment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../js/auth-check.js"></script>
+    <script src="../js/parent-enrollment.js"></script>
+</body>
+</html> 
